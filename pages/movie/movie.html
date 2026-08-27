@@ -4,40 +4,70 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>영화 상세 - 넷플릭스</title>
-    <link rel="stylesheet" href="movie.css" />
+    <link rel="stylesheet" href="/pages/movie/movie.css" />
   </head>
   <body>
-    <!-- 상단 네비게이션 (뒤로가기 또는 홈으로 이동) -->
     <header class="header">
-      <a class="logo" href="../index/index.html">NETFLIX</a>
-      <!-- a 태그에 history.back() 적용 -->
-      <a href="#" onclick="history.back(); return false;" class="back-btn">돌아가기</a>
+      <a class="logo" href="/">NETFLIX</a>
+      <a href="/" class="back-btn">홈으로 돌아가기</a>
     </header>
 
-    <!-- 영화 상세 콘텐츠 영역 -->
     <main class="movie-detail-container">
-      <div class="movie-backdrop">
-        <!-- 배경 이미지 영역 -->
-        <div class="overlay"></div>
+      <!-- 상단: 왼쪽 영화 정보 + 오른쪽 회차 목록 -->
+      <div class="content-wrapper">
+        <div class="movie-info-content">
+          <h1 id="movie-title">영화 불러오는 중...</h1>
+          <div class="movie-meta">
+            <span id="movie-year"></span>
+            <span id="movie-rating" class="badge"></span>
+            <span id="movie-duration"></span>
+          </div>
+          <p id="movie-description" class="movie-desc"></p>
+          <div class="movie-actions">
+            <button type="button" class="play-btn">▶ 재생</button>
+            <button type="button" class="add-list-btn">+ 내가 찜한 콘텐츠</button>
+          </div>
+        </div>
+
+        <div class="episodes-container">
+          <h2>작품 정보</h2>
+          <div class="episode-item"><strong>유형</strong> <span id="movie-type"></span></div>
+          <div class="episode-item"><strong>장르</strong> <span id="movie-genre"></span></div>
+          <div class="episode-item"><strong>출연</strong> <span id="movie-cast"></span></div>
+        </div>
       </div>
 
-      <div class="movie-info-content">
-        <h1 id="movie-title">영화 제목 로딩 중...</h1>
-        <div class="movie-meta">
-          <span id="movie-year">2026</span>
-          <span id="movie-rating" class="badge">15+</span>
-          <span id="movie-duration">2시간 10분</span>
+      <div class="review-section">
+        <div class="total-rating-box">
+          <span class="rating-label">평균 별점</span>
+          <div id="average-stars" class="stars">☆☆☆☆☆</div>
+          <strong id="average-rating">0.0 / 5.0</strong>
+          <span id="review-count">0개의 한줄평</span>
         </div>
-        <p id="movie-description" class="movie-desc">
-          영화 상세 소개 문구가 들어갈 영역입니다. 잠시만 기다려주세요.
-        </p>
-        <div class="movie-actions">
-          <button type="button" class="play-btn">▶ 재생</button>
-          <button type="button" class="add-list-btn">+ 내가 찜한 콘텐츠</button>
+
+        <div class="user-review-box">
+          <form id="review-form" class="review-form">
+            <label for="rating">별점</label>
+            <select id="rating" name="rating" required>
+              <option value="5">★★★★★ (5점)</option>
+              <option value="4">★★★★☆ (4점)</option>
+              <option value="3">★★★☆☆ (3점)</option>
+              <option value="2">★★☆☆☆ (2점)</option>
+              <option value="1">★☆☆☆☆ (1점)</option>
+            </select>
+            <label for="comment">한줄평</label>
+            <textarea id="comment" name="comment" maxlength="300" required placeholder="한줄평을 남겨 주세요."></textarea>
+            <button type="submit">등록</button>
+            <p id="review-message" aria-live="polite"></p>
+          </form>
+          <div>
+            <h2>한줄평</h2>
+            <div id="review-list" class="review-list"></div>
+          </div>
         </div>
       </div>
     </main>
 
-    <script src="movie.js"></script>
+    <script src="/pages/movie/movie.js"></script>
   </body>
 </html>

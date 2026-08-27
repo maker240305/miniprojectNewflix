@@ -1,55 +1,89 @@
-// URL 쿼리 스트링 파싱
-const urlParams = new URLSearchParams(window.location.search);
-const movieId = urlParams.get('id');
+const movieId = new URLSearchParams(window.location.search).get('id');
+const reviewForm = document.getElementById('review-form');
+const reviewMessage = document.getElementById('review-message');
 
-// 예시 데이터베이스 (실제 프로젝트에서는 서버 API나 데이터 파일 사용)
-const movieData = {
-  "1": {
-    title: "대표 영화 제목 (영화 1)",
-    year: "2026",
-    rating: "15+",
-    duration: "2시간 15분",
-    description: "첫 번째 영화에 대한 상세한 소개 문구입니다. 넷플릭스 스타일의 클론 코딩 페이지에서 동적으로 데이터를 불러오고 있습니다."
-  },
-  "2": {
-    title: "두 번째 영화",
-    year: "2025",
-    rating: "19+",
-    duration: "1시간 50분",
-    description: "두 번째 인기 콘텐츠 상세 설명입니다."
-  },
-  "3": {
-    title: "세 번째 영화",
-    year: "2024",
-    rating: "ALL",
-    duration: "1시간 30분",
-    description: "세 번째 인기 콘텐츠 상세 설명입니다."
-  },
-  "4": {
-    title: "네 번째 영화",
-    year: "2026",
-    rating: "12+",
-    duration: "2시간 05분",
-    description: "네 번째 인기 콘텐츠 상세 설명입니다."
-  }
-};
-
-// DOM 요소 선택
-const titleElement = document.getElementById('movie-title');
-const yearElement = document.getElementById('movie-year');
-const ratingElement = document.getElementById('movie-rating');
-const durationElement = document.getElementById('movie-duration');
-const descElement = document.getElementById('movie-description');
-
-// 데이터 매칭 및 렌더링
-if (movieId && movieData[movieId]) {
-  const currentMovie = movieData[movieId];
-  titleElement.textContent = currentMovie.title;
-  yearElement.textContent = currentMovie.year;
-  ratingElement.textContent = currentMovie.rating;
-  durationElement.textContent = currentMovie.duration;
-  descElement.textContent = currentMovie.description;
-} else {
-  titleElement.textContent = "영화를 찾을 수 없습니다.";
-  descElement.textContent = "존재하지 않거나 잘못된 접근입니다.";
+function starsFromRating(rating) {
+  const filledStars = Math.round(Number(rating));
+  return '★'.repeat(filledStars) + '☆'.repeat(5 - filledStars);
 }
+
+function showMovie(movie) {
+  document.title = `${movie.title} - 넷플릭스`;
+  document.getElementById('movie-title').textContent = movie.title;
+  document.getElementById('movie-year').textContent = movie.release_year;
+  document.getElementById('movie-rating').textContent = movie.age_rating || '등급 정보 없음';
+  document.getElementById('movie-duration').textContent = movie.duration_text || '';
+  document.getElementById('movie-description').textContent = movie.description;
+  document.getElementById('movie-type').textContent = movie.content_type === 'movie' ? '영화' : '드라마';
+  document.getElementById('movie-genre').textContent = movie.genre || '정보 없음';
+  document.getElementById('movie-cast').textContent = movie.cast_members || '정보 없음';
+  document.getElementById('average-stars').textContent = starsFromRating(movie.average_rating);
+  document.getElementById('average-rating').textContent = `${movie.average_rating} / 5.0`;
+  document.getElementById('review-count').textContent = `${movie.review_count}개의 한줄평`;
+}
+
+function showReviews(reviews) {
+  const reviewList = document.getElementById('review-list');
+  reviewList.replaceChildren();
+
+  if (reviews.length === 0) {
+    reviewList.textContent = '첫 번째 한줄평을 남겨 주세요.';
+    return;
+  }
+
+  reviews.forEach((review) => {
+    const item = document.createElement('article');
+    const rating = document.createElement('strong');
+    const comment = document.createElement('p');
+    const date = document.createElement('small');
+
+    rating.className = 'stars';
+    rating.textContent = starsFromRating(review.rating);
+    comment.textContent = review.comment;
+    date.textContent = new Date(review.created_at).toLocaleDateString('ko-KR');
+    item.append(rating, comment, date);
+    reviewList.append(item);
+  });
+}
+
+async function loadMovie() {
+  if (!movieId) {
+    throw new Error('영화 ID가 없습니다.');
+  }
+
+  const response = await fetch(`/api/movies/${movieId}`);
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || '영화 정보를 불러오지 못했습니다.');
+
+  showMovie(data.movie);
+  showReviews(data.reviews);
+}
+
+reviewForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  reviewMessage.textContent = '';
+
+  try {
+    const formData = new FormData(reviewForm);
+    const response = await fetch(`/api/movies/${movieId}/reviews`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        rating: Number(formData.get('rating')),
+        comment: formData.get('comment'),
+      }),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || '한줄평을 저장하지 못했습니다.');
+
+    reviewForm.reset();
+    reviewMessage.textContent = '한줄평이 등록되었습니다.';
+    await loadMovie();
+  } catch (error) {
+    reviewMessage.textContent = error.message;
+  }
+});
+
+loadMovie().catch((error) => {
+  document.getElementById('movie-title').textContent = error.message;
+});
