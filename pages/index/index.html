@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Netflix Clone</title>
-    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="/pages/index/index.css" />
   </head>
   <body>
     <header class="header">
-      <a class="logo" href="index.html">NETFLIX</a>
+      <a class="logo" href="/">NETFLIX</a>
       <nav>
         <a href="#home">홈</a>
         <a href="#popular">인기 콘텐츠</a>
@@ -20,25 +20,19 @@
     <main>
       <section id="home" class="hero">
         <p>NETFLIX ORIGINAL</p>
-        <h1>대표 영화 제목</h1>
-        <p>영화 소개 문구가 들어갈 영역입니다.</p>
+        <h1 id="featured-title">영화 불러오는 중...</h1>
+        <p id="featured-description">잠시만 기다려 주세요.</p>
         <div>
-          <button type="button" onclick="location.href='../movie/movie.html?id=1'">▶ 재생</button>
-          <a href="../movie/movie.html?id=1">ⓘ 상세 정보</a>
+          <a id="featured-link" href="#">ⓘ 상세 정보</a>
         </div>
       </section>
 
       <section id="popular" class="content-row">
         <h2>인기 콘텐츠</h2>
-        <div class="movie-list">
-          <a href="../movie/movie.html?id=1" class="movie-card">영화 1</a>
-          <a href="../movie/movie.html?id=2" class="movie-card">영화 2</a>
-          <a href="../movie/movie.html?id=3" class="movie-card">영화 3</a>
-          <a href="../movie/movie.html?id=4" class="movie-card">영화 4</a>
-        </div>
+        <div id="movie-list" class="movie-list"></div>
       </section>
     </main>
 
-    <script src="index.js"></script>
+    <script src="/pages/index/index.js"></script>
   </body>
 </html>
