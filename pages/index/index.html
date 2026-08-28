@@ -3,33 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Netflix Clone</title>
+    <title>Newflix</title>
     <link rel="stylesheet" href="/pages/index/index.css" />
   </head>
   <body>
     <header class="header">
-      <a class="logo" href="/">NETFLIX</a>
+      <a class="logo" href="/">NEWFLIX</a>
       <nav>
         <a href="#home">홈</a>
-        <a href="#popular">인기 콘텐츠</a>
-        <a href="#my-list">내가 찜한 콘텐츠</a>
+        <a id="my-list-link" href="#my-list">내가 찜한 콘텐츠</a>
       </nav>
-      <button type="button">프로필</button>
+      <div class="profile-area">
+        <button id="profile-button" type="button" aria-expanded="false">프로필</button>
+        <div id="profile-menu" class="profile-menu" hidden>
+          <strong>해커톤</strong>
+          <a href="https://help.netflix.com/ko" target="_blank" rel="noopener noreferrer">? 고객센터</a>
+        </div>
+      </div>
     </header>
 
     <main>
       <section id="home" class="hero">
-        <p>NETFLIX ORIGINAL</p>
+        <p>NEWFLIX ORIGINAL</p>
         <h1 id="featured-title">영화 불러오는 중...</h1>
         <p id="featured-description">잠시만 기다려 주세요.</p>
         <div>
+          <a id="featured-play" class="play-link" href="#" target="_blank" rel="noopener noreferrer">▶ 재생</a>
           <a id="featured-link" href="#">ⓘ 상세 정보</a>
         </div>
       </section>
 
       <section id="popular" class="content-row">
         <h2>인기 콘텐츠</h2>
-        <div id="movie-list" class="movie-list"></div>
+        <div class="movie-carousel">
+          <button id="carousel-prev" class="carousel-button carousel-prev" type="button" aria-label="이전 콘텐츠" hidden>‹</button>
+          <div id="movie-list" class="movie-list"></div>
+          <button id="carousel-next" class="carousel-button carousel-next" type="button" aria-label="다음 콘텐츠">›</button>
+        </div>
+      </section>
+
+      <section id="my-list" class="content-row saved-section" hidden>
+        <h2>내가 찜한 콘텐츠</h2>
+        <p id="my-list-empty" class="empty-message">찜한 콘텐츠가 없습니다.</p>
+        <div id="my-list-movies" class="movie-list"></div>
       </section>
     </main>
 

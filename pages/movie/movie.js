@@ -1,6 +1,8 @@
 const movieId = new URLSearchParams(window.location.search).get('id');
 const reviewForm = document.getElementById('review-form');
 const reviewMessage = document.getElementById('review-message');
+const addListButton = document.getElementById('add-list-button');
+const myListStorageKey = 'newflixMyList';
 
 function starsFromRating(rating) {
   const filledStars = Math.round(Number(rating));
@@ -8,7 +10,7 @@ function starsFromRating(rating) {
 }
 
 function showMovie(movie) {
-  document.title = `${movie.title} - 넷플릭스`;
+  document.title = `${movie.title} - 뉴플릭스`;
   document.getElementById('movie-title').textContent = movie.title;
   document.getElementById('movie-year').textContent = movie.release_year;
   document.getElementById('movie-rating').textContent = movie.age_rating || '등급 정보 없음';
@@ -17,10 +19,38 @@ function showMovie(movie) {
   document.getElementById('movie-type').textContent = movie.content_type === 'movie' ? '영화' : '드라마';
   document.getElementById('movie-genre').textContent = movie.genre || '정보 없음';
   document.getElementById('movie-cast').textContent = movie.cast_members || '정보 없음';
+  document.getElementById('play-link').href = movie.trailer_url || '#';
   document.getElementById('average-stars').textContent = starsFromRating(movie.average_rating);
   document.getElementById('average-rating').textContent = `${movie.average_rating} / 5.0`;
   document.getElementById('review-count').textContent = `${movie.review_count}개의 한줄평`;
+  updateMyListButton();
 }
+
+function getSavedMovieIds() {
+  try {
+    const savedIds = JSON.parse(localStorage.getItem(myListStorageKey) || '[]');
+    return Array.isArray(savedIds) ? savedIds.map(Number).filter(Number.isInteger) : [];
+  } catch {
+    return [];
+  }
+}
+
+function updateMyListButton() {
+  const isSaved = getSavedMovieIds().includes(Number(movieId));
+  addListButton.textContent = isSaved ? '✓ 찜한 콘텐츠' : '+ 내가 찜한 콘텐츠';
+  addListButton.setAttribute('aria-pressed', String(isSaved));
+}
+
+addListButton.addEventListener('click', () => {
+  const savedIds = getSavedMovieIds();
+  const numericMovieId = Number(movieId);
+  const nextSavedIds = savedIds.includes(numericMovieId)
+    ? savedIds.filter((id) => id !== numericMovieId)
+    : [...savedIds, numericMovieId];
+
+  localStorage.setItem(myListStorageKey, JSON.stringify(nextSavedIds));
+  updateMyListButton();
+});
 
 function showReviews(reviews) {
   const reviewList = document.getElementById('review-list');
