@@ -1,3 +1,5 @@
+접속 링크 https://newflix-4mn4.onrender.com
+
 저희 팀이 선택한 서비스는 Netflix입니다. <br>
 개선 기능은 **평점기능**과 **한줄평** 기능 입니다. <br>
 <img width="797" height="379" alt="rm1" src="https://github.com/user-attachments/assets/21669875-b153-4859-97b9-1f2f6859d040" />
