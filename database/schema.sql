@@ -10,6 +10,7 @@ CREATE TABLE movies (
   cast_members VARCHAR(255),
   poster_url TEXT,
   background_url TEXT,
+  trailer_url TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 

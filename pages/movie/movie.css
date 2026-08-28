@@ -67,11 +67,13 @@ body {
 }
 
 .play-btn {
+  display: inline-block;
   background: #fff;
   color: #000;
   padding: 10px 20px;
   font-weight: bold;
   border: none;
+  text-decoration: none;
 }
 
 .add-list-btn {
