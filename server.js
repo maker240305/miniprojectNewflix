@@ -23,7 +23,8 @@ app.get('/api/movies', async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT movies.id, movies.title, movies.content_type, movies.release_year,
-        movies.age_rating, movies.duration_text, movies.genre, movies.poster_url,
+        movies.age_rating, movies.duration_text, movies.description, movies.genre,
+        movies.poster_url, movies.background_url, movies.trailer_url,
         COALESCE(ROUND(AVG(reviews.rating)::numeric, 1), 0) AS average_rating,
         COUNT(reviews.id)::integer AS review_count
       FROM movies
