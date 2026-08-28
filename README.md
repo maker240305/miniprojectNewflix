@@ -11,6 +11,9 @@
 <img width="547" height="193" alt="rm3" src="https://github.com/user-attachments/assets/c0159810-802e-46ac-84bb-c8bfba5a2246" />
 
 
+추가 기능들 <br>
+상세 페이지에서 +내가 찜한 콘텐츠 버튼 클릭시 홈 페이지 상단의 내가 찜한 콘텐츠를 클릭하면 보이게 됩니다. <br>
+
 저희의 기술 스택은 <br>
 프론트앤드는 Html css js <br> 
 백앤드는 node.js+express <br>
